@@ -13,7 +13,7 @@ class LightColors {
 
 class DarkColors {
   static Color get dark => Color(0xff050606);
-   static Color get upperLeftShadow => Color(0xff434343);
+  static Color get upperLeftShadow => Color(0xff434343);
   static Color get lowerRightShadow => Color(0xff232323);
   static Color get background => Color(0xff333333);
   static Color get red1 => Color(0xffd11302);
@@ -35,6 +35,7 @@ class CustomColors {
   static Color other = Colors.grey[700];
   static Color selectedButton = LightColors.purple;
   static Color selectedSong = LightColors.dark;
+  static Color dark = Colors.black;
 
   static void applyDarkTheme() {
     background = DarkColors.background;
@@ -45,6 +46,7 @@ class CustomColors {
     other = Colors.white70;
     selectedButton = DarkColors.orange;
     selectedSong = DarkColors.dark;
+    dark = Colors.black;
   }
 
   static void applyLightTheme() {
@@ -56,5 +58,6 @@ class CustomColors {
     other = Colors.grey[700];
     selectedButton = LightColors.purple;
     selectedSong = LightColors.dark;
+    dark = LightColors.background;
   }
 }

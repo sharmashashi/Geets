@@ -26,49 +26,56 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 ///
                 Positioned(
-                  top: 10 +
-                      ScreenDimension.percent(percent: 3.4, isHeight: true),
-                  right: 10,
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: CustomColors.background,
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 1.5,
-                              spreadRadius: 2,
-                              offset: Offset(1, 1),
-                              color: CustomColors.lowerRightShadow),
-                          BoxShadow(
-                              blurRadius: 1.5,
-                              spreadRadius: 2,
-                              offset: Offset(-1, -1),
-                              color: CustomColors.upperLeftShadow),
-                        ]),
-                    child: GestureDetector(
-                      onTap: () async {
-                        bool darkTheme =
-                            await SavedPreferences.fetch(isDarkTheme: true);
-                        darkTheme
-                            ? SavedPreferences.update(isDarkTheme: false)
-                            : SavedPreferences.update(isDarkTheme: true);
-                      },
-                      child: Icon(
-                        Icons.brightness_6,
-                        color: CustomColors.background == DarkColors.background
-                            ? LightColors.background
-                            : DarkColors.background,
-                      ),
-                    ),
-                  ),
-                )
+                    top: 10 +
+                        ScreenDimension.percent(percent: 3.4, isHeight: true),
+                    right: 10,
+                    child: _themeSelector())
 
                 ///
               ],
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _themeSelector() {
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: CustomColors.background, width: 2),
+          gradient: LinearGradient(
+              colors: [CustomColors.upperLeftShadow, CustomColors.background],
+              stops: [0.3, 1],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight),
+          boxShadow: [
+            BoxShadow(
+                blurRadius: 2,
+                spreadRadius: 2,
+                offset: Offset(1, 1),
+                color: CustomColors.lowerRightShadow),
+            BoxShadow(
+                blurRadius: 2,
+                spreadRadius: 2,
+                offset: Offset(-1, -1),
+                color: CustomColors.upperLeftShadow),
+          ]),
+      child: GestureDetector(
+        onTap: () async {
+          bool darkTheme = await SavedPreferences.fetch(isDarkTheme: true);
+          darkTheme
+              ? SavedPreferences.update(isDarkTheme: false)
+              : SavedPreferences.update(isDarkTheme: true);
+        },
+        child: Icon(
+          Icons.brightness_6,
+          color: CustomColors.background == DarkColors.background
+              ? LightColors.background
+              : DarkColors.background,
+        ),
       ),
     );
   }
