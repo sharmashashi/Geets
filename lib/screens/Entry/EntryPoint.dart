@@ -5,6 +5,7 @@ import 'package:Geets/utils/global_variables.dart';
 import 'package:Geets/utils/saved_preference.dart';
 import 'package:Geets/utils/screen_dimension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class EntryPoint extends StatefulWidget {
@@ -27,13 +28,17 @@ class _EntryPointState extends State<EntryPoint> {
                   : false);
           return Scaffold(
             backgroundColor: CustomColors.background,
-              appBar: PreferredSize(
-                preferredSize: Size.zero,
-                child: Container(
-                  color: CustomColors.background,
-                ),
-              ),
-              body: Builder(
+           
+            body: AnnotatedRegion<SystemUiOverlayStyle>(
+              value:
+                  MediaQuery.of(context).platformBrightness == Brightness.dark
+                      ? SystemUiOverlayStyle(
+                          statusBarIconBrightness: Brightness.light,
+                          statusBarColor: CustomColors.background)
+                      : SystemUiOverlayStyle(
+                          statusBarIconBrightness: Brightness.dark,
+                          statusBarColor: CustomColors.background),
+              child: Builder(
                 builder: (context) {
                   //set screen size
                   ScreenDimension.init(
@@ -43,7 +48,7 @@ class _EntryPointState extends State<EntryPoint> {
                   return Home();
                 },
               ),
-            
+            ),
           );
         },
       ),
