@@ -15,6 +15,18 @@ class EntryPoint extends StatefulWidget {
 
 class _EntryPointState extends State<EntryPoint> {
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(milliseconds: 100)).then((value) {
+      SavedPreferences.update(
+          isDarkTheme:
+              MediaQuery.of(context).platformBrightness == Brightness.dark
+                  ? true
+                  : false);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ThemeProvider>(
       create: (context) => ThemeProvider(),
@@ -22,28 +34,25 @@ class _EntryPointState extends State<EntryPoint> {
         builder: (context) {
           //
           ThemeProvider _themeProvider = Provider.of<ThemeProvider>(context);
-          SavedPreferences.update(
-              MediaQuery.of(context).platformBrightness == Brightness.dark
-                  ? true
-                  : false);
+
           return Scaffold(
+            extendBodyBehindAppBar: false,
+            extendBody: false,
             backgroundColor: CustomColors.background,
-           
             body: AnnotatedRegion<SystemUiOverlayStyle>(
-              value:
-                  MediaQuery.of(context).platformBrightness == Brightness.dark
-                      ? SystemUiOverlayStyle(
-                          statusBarIconBrightness: Brightness.light,
-                          statusBarColor: CustomColors.background)
-                      : SystemUiOverlayStyle(
-                          statusBarIconBrightness: Brightness.dark,
-                          statusBarColor: CustomColors.background),
+              value: CustomColors.background == DarkColors.background
+                  ? SystemUiOverlayStyle(
+                      statusBarIconBrightness: Brightness.light,
+                      statusBarColor: CustomColors.background)
+                  : SystemUiOverlayStyle(
+                      statusBarIconBrightness: Brightness.dark,
+                      statusBarColor: CustomColors.background),
               child: Builder(
-                builder: (context) {
+                builder: (builderContext) {
                   //set screen size
                   ScreenDimension.init(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width);
+                      height: MediaQuery.of(builderContext).size.height,
+                      width: MediaQuery.of(builderContext).size.width);
                   Globalvariables.setThemeProvider(_themeProvider);
                   return Home();
                 },

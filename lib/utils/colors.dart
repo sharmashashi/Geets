@@ -13,9 +13,9 @@ class LightColors {
 
 class DarkColors {
   static Color get dark => Color(0xff050606);
-  static Color get upperLeftShadow => Color(0xff181818);
-  static Color get lowerRightShadow => Color(0xff0c0c0c);
-  static Color get background => Color(0xff121212);
+   static Color get upperLeftShadow => Color(0xff434343);
+  static Color get lowerRightShadow => Color(0xff232323);
+  static Color get background => Color(0xff333333);
   static Color get red1 => Color(0xffd11302);
   static Color get red2 => Color(0xffa30d02);
   static Color get redDark => Color(0xff5d0f04);

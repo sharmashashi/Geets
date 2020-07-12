@@ -1,5 +1,4 @@
 import 'package:Geets/screens/Entry/ThemeProvider.dart';
-import 'package:Geets/utils/colors.dart';
 
 class Globalvariables {
   Globalvariables.privateConstructor();
