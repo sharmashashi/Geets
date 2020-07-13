@@ -5,7 +5,7 @@ class LightColors {
   static Color get lowerRightShadow => Color(0xffcfd0d0);
   static Color get background => Color(0xfff1f2f2);
   static Color get purple1 => Color(0xff9a97b4);
-  static Color get purple => Color(0xff94589b);
+  static Color get playPauseButton => Color(0xff94589b);
   static Color get purpleDark => Color(0xff785aa0);
   static Color get dark => Color(0xff352351);
   static Color get purple2 => Color(0xffad77a3);
@@ -19,7 +19,7 @@ class DarkColors {
   static Color get red1 => Color(0xffd11302);
   static Color get red2 => Color(0xffa30d02);
   static Color get redDark => Color(0xff5d0f04);
-  static Color get orange => Color(0xffca5421);
+  static Color get playPauseButton => Color(0xffca5421);
   static Color get lightPink => Color(0xfff5a691);
 }
 
@@ -33,7 +33,7 @@ class CustomColors {
   static Color normalText = Colors.grey;
   static Color highlightedText = Colors.grey[900];
   static Color other = Colors.grey[700];
-  static Color selectedButton = LightColors.purple;
+  static Color playPauseButton = LightColors.playPauseButton;
   static Color selectedSong = LightColors.dark;
   static Color dark = Colors.black;
 
@@ -41,10 +41,10 @@ class CustomColors {
     background = DarkColors.background;
     lowerRightShadow = DarkColors.lowerRightShadow;
     upperLeftShadow = DarkColors.upperLeftShadow;
-    normalText = Colors.white70;
-    highlightedText = Colors.white;
+    normalText = Colors.white54;
+    highlightedText = Colors.white70;
     other = Colors.white70;
-    selectedButton = DarkColors.orange;
+    playPauseButton = DarkColors.playPauseButton;
     selectedSong = DarkColors.dark;
     dark = Colors.black;
   }
@@ -54,9 +54,9 @@ class CustomColors {
     lowerRightShadow = LightColors.lowerRightShadow;
     upperLeftShadow = LightColors.upperLeftShadow;
     normalText = Colors.grey;
-    highlightedText = Colors.grey[900];
+    highlightedText = Colors.grey[700];
     other = Colors.grey[700];
-    selectedButton = LightColors.purple;
+    playPauseButton = LightColors.playPauseButton;
     selectedSong = LightColors.dark;
     dark = LightColors.background;
   }
