@@ -14,18 +14,8 @@ class EntryPoint extends StatefulWidget {
 }
 
 class _EntryPointState extends State<EntryPoint> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration(milliseconds: 100)).then((value) {
-      SavedPreferences.update(
-          isDarkTheme:
-              MediaQuery.of(context).platformBrightness == Brightness.dark
-                  ? true
-                  : false);
-    });
-  }
-
+  
+  
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ThemeProvider>(
@@ -34,7 +24,11 @@ class _EntryPointState extends State<EntryPoint> {
         builder: (context) {
           //
           ThemeProvider _themeProvider = Provider.of<ThemeProvider>(context);
-
+ SavedPreferences.update(
+          isDarkTheme:
+              MediaQuery.of(context).platformBrightness == Brightness.dark
+                  ? true
+                  : false);
           return Scaffold(
             extendBodyBehindAppBar: false,
             extendBody: false,

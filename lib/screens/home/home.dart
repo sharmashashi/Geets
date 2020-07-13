@@ -1,3 +1,4 @@
+import 'package:Geets/screens/home/favourites_card.dart';
 import 'package:Geets/screens/home/home_provider.dart';
 import 'package:Geets/utils/colors.dart';
 import 'package:Geets/utils/saved_preference.dart';
@@ -24,14 +25,12 @@ class _HomeState extends State<Home> {
             height: ScreenDimension.percent(percent: 100, isHeight: true),
             child: Stack(
               children: <Widget>[
-                ///
+               
                 Positioned(
-                    top: 10 +
-                        ScreenDimension.percent(percent: 3.4, isHeight: true),
-                    right: 10,
-                    child: _themeSelector())
-
-                ///
+                  top: ScreenDimension.percent(percent:10, isHeight: true),
+                  left: ScreenDimension.percent(percent: 7.5, isHeight: false),
+                  child: FavouritesCard(),
+                )
               ],
             ),
           );
