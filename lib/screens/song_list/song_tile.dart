@@ -15,19 +15,26 @@ class SongTile extends StatefulWidget {
 }
 
 class _SongTileState extends State<SongTile> {
+  bool lock = false;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<TileProvider>(
       create: (context) => TileProvider(),
       child: Builder(builder: (context) {
         TileProvider _tileProvider = Provider.of<TileProvider>(context);
-        SavedPreferences.fetch(initSongTile: true).then((value) {
-          if (value == false) {
-            SavedPreferences.update(initSongTile: true).then((_) {
-              _tileProvider.updateSongStatus(play: false);
-            });
-          }
-        });
+
+        if (lock == false) {
+          lock = true;
+          SavedPreferences.fetch(initSongTile: true).then((value) {
+            if (value == false) {
+              SavedPreferences.update(initSongTile: true).then((_) {
+                _tileProvider.updateSongStatus(play: false);
+                lock = false;
+              });
+            }
+          });
+        }
         return Container(
           width: ScreenDimension.width,
           height: ScreenDimension.percent(percent: 8, isHeight: true),
@@ -111,28 +118,37 @@ class _SongTileState extends State<SongTile> {
   }
 
   Widget _playerButton(TileProvider provider) {
-    return Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: CustomColors.background, width: 2),
-            gradient: LinearGradient(
-                colors: [CustomColors.upperLeftShadow, CustomColors.background],
-                stops: [0.3, 1],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight),
-            boxShadow: [
-              BoxShadow(
-                  blurRadius: 2,
-                  spreadRadius: 2,
-                  offset: Offset(1, 1),
-                  color: CustomColors.lowerRightShadow),
-              BoxShadow(
-                  blurRadius: 2,
-                  spreadRadius: 2,
-                  offset: Offset(-1, -1),
-                  color: CustomColors.upperLeftShadow),
-            ]),
-        child: provider.playPauseIcon);
+    return GestureDetector(
+      onTap: () {
+        provider.isPlaying == true
+            ? provider.updateSongStatus(play: false)
+            : provider.updateSongStatus(play: true);
+      },
+      child: Container(
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: CustomColors.background, width: 2),
+              gradient: LinearGradient(colors: [
+                CustomColors.upperLeftShadow,
+                CustomColors.background
+              ], stops: [
+                0.3,
+                1
+              ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 2,
+                    spreadRadius: 2,
+                    offset: Offset(1, 1),
+                    color: CustomColors.lowerRightShadow),
+                BoxShadow(
+                    blurRadius: 2,
+                    spreadRadius: 2,
+                    offset: Offset(-1, -1),
+                    color: CustomColors.upperLeftShadow),
+              ]),
+          child: provider.playPauseIcon),
+    );
   }
 }
