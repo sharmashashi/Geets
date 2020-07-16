@@ -6,8 +6,8 @@ workflows:
         name: Android App(Geets) with Flutter Module
         environment:
             vars:
-                FLUTTER_MODULE_DIR: "{{/home/shashi/Projects/flutter/Geets}}""
-                HOST_ANDROID_APP_DIR: "{{/home/shashi/flutter/Geets/android}}""
+                FLUTTER_MODULE_DIR: "{{/home/shashi/Projects/flutter/Geets}}"
+                HOST_ANDROID_APP_DIR: "{{/home/shashi/flutter/Geets/android}}"
             flutter: stable
         scripts:
             - echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
