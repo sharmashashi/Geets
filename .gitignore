@@ -46,3 +46,4 @@ ios/Flutter/Release.xcconfig
 ios/Flutter/Debug.xcconfig
 .vscode/launch.json
 ios/Podfile
+android/key.properties
