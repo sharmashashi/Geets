@@ -10,7 +10,7 @@ workflows:
                 HOST_ANDROID_APP_DIR: "~/Projects/flutter/Geets/android"
             flutter: stable
         scripts:
-            - echo "sdk.dir=$HOME/programs/android-sdk-macosx" > "$FCI_BUILD_DIR/$HOST_ANDROID_APP_DIR/local.properties"
+            - echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
             - cd $FLUTTER_MODULE_DIR && flutter pub get
             - cd $HOST_ANDROID_APP_DIR && ./gradlew assembleDebug
         artifacts:
