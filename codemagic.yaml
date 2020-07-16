@@ -11,6 +11,6 @@ workflows:
         scripts:
             - echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
             - cd $FLUTTER_MODULE_DIR && flutter pub get
-            - cd $FCI_BUILD_DIR/android && ./gradlew assembleDebug
+            - cd $FLUTTER_MODULE_DIR/android && ./gradlew assembleDebug
         artifacts:
             - $HOST_ANDROID_APP_DIR/app/build/outputs/**/**/*.apk
