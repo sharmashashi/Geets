@@ -90,7 +90,7 @@ class _SongListState extends State<SongList> {
   //get song list
   _getSongList(SongListProvider provider) async {
     String _fileName;
-    Directory _dir = Directory(Directory.current.path + 'storage');
+    Directory _dir = Directory(Directory.current.path + 'sdcard');
     Stream<FileSystemEntity> entityStream = _dir.list(recursive: true);
     // ignore: cancel_subscriptions
     StreamSubscription<FileSystemEntity> subscription =

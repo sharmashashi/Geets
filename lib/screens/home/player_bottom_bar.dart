@@ -1,4 +1,5 @@
 import 'package:Geets/screens/home/home_provider.dart';
+import 'package:Geets/screens/now_playing/now_playing.dart';
 import 'package:Geets/utils/colors.dart';
 import 'package:Geets/utils/screen_dimension.dart';
 import 'package:audioplayer/audioplayer.dart';
@@ -43,35 +44,40 @@ class _PlayerBottomBarState extends State<PlayerBottomBar> {
   }
 
   Widget _songInfo() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        //
-        Container(
-          padding: EdgeInsets.only(left: 10),
-          alignment: Alignment.centerLeft,
-          height: ScreenDimension.percent(percent: 5, isHeight: true) - 5,
-          width: ScreenDimension.percent(percent: 55, isHeight: false) - 20,
-          child: Text(
-            widget.homeProvider.songName,
-            overflow: TextOverflow.clip,
-            style: TextStyle(
-                color: CustomColors.highlightedText,
-                fontSize: 12,
-                fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: (){
+        if(widget.homeProvider.songName!='Title')Navigator.push(context, MaterialPageRoute(builder: (context)=>NowPlaying()));
+      },
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          //
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            alignment: Alignment.centerLeft,
+            height: ScreenDimension.percent(percent: 5, isHeight: true) - 5,
+            width: ScreenDimension.percent(percent: 55, isHeight: false) - 20,
+            child: Text(
+              widget.homeProvider.songName,
+              overflow: TextOverflow.clip,
+              style: TextStyle(
+                  color: CustomColors.highlightedText,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        Container(
-          padding: EdgeInsets.only(left: 10),
-          height: ScreenDimension.percent(percent: 3, isHeight: true) - 5,
-          width: ScreenDimension.percent(percent: 55, isHeight: false) - 20,
-          child: Text(
-            widget.homeProvider.artist,
-            style: TextStyle(color: CustomColors.normalText, fontSize: 10),
-          ),
-        )
-      ],
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            height: ScreenDimension.percent(percent: 3, isHeight: true) - 5,
+            width: ScreenDimension.percent(percent: 55, isHeight: false) - 20,
+            child: Text(
+              widget.homeProvider.artist,
+              style: TextStyle(color: CustomColors.normalText, fontSize: 10),
+            ),
+          )
+        ],
+      ),
     );
   }
 
