@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SongTile extends StatefulWidget {
+  final bool backAfterClick;
   final AudioPlayer audioPlayerRef;
   final int count;
   final String title;
@@ -19,6 +20,7 @@ class SongTile extends StatefulWidget {
       @required this.artist,
       @required this.filePath,
       @required this.homeProvider,
+      this.backAfterClick,
       @required this.audioPlayerRef});
   @override
   _SongTileState createState() => _SongTileState();
@@ -33,6 +35,7 @@ class _SongTileState extends State<SongTile> {
         return GestureDetector(
           onTap: () {
             _handlePlay();
+            if (widget.backAfterClick == true) Navigator.pop(context);
           },
           child: Container(
             width: ScreenDimension.width,
@@ -57,7 +60,7 @@ class _SongTileState extends State<SongTile> {
                 // Container(
                 //   width: ScreenDimension.percent(percent: 20, isHeight: false),
                 //   alignment: Alignment.center,
-                //   child: _playerButton(_tileProvider),
+                //   child: _playerButton(),
                 // )
               ],
             ),
@@ -175,7 +178,7 @@ class _SongTileState extends State<SongTile> {
         widget.homeProvider.updateSongStatus(playpause: false);
         widget.homeProvider.notify();
         await widget.audioPlayerRef.stop();
-         widget.homeProvider.updateSongStatus(playpause: true);
+        widget.homeProvider.updateSongStatus(playpause: true);
         widget.homeProvider.notify();
       }
       //

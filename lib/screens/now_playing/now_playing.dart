@@ -1,4 +1,5 @@
 import 'package:Geets/screens/home/home_provider.dart';
+import 'package:Geets/screens/now_playing/current_song_list.dart';
 import 'package:Geets/screens/now_playing/now_playing_provider.dart';
 import 'package:Geets/utils/colors.dart';
 import 'package:Geets/utils/custom_shadow.dart';
@@ -78,7 +79,21 @@ class _NowPlayingState extends State<NowPlaying> {
                               fontWeight: FontWeight.bold,
                               fontSize: 24),
                         ),
-                        _topOptions(onTap: () {}, iconData: Icons.list)
+                        _topOptions(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Material(
+                                     
+                                          child: CurrentSongList(
+                                            audioPlayer: widget.audioPlayerRef,
+                                            homeProvider: widget.homeProvider,
+                                          )
+                                    );
+                                  });
+                            },
+                            iconData: Icons.list)
                       ],
                     )),
 
