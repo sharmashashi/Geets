@@ -23,6 +23,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/couple_dark.jpg
+    - assets/couple_light.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

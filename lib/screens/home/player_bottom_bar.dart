@@ -45,10 +45,16 @@ class _PlayerBottomBarState extends State<PlayerBottomBar> {
 
   Widget _songInfo() {
     return GestureDetector(
-      onTap: (){
-        if(widget.homeProvider.songName!='Title')Navigator.push(context, MaterialPageRoute(builder: (context)=>NowPlaying()));
+      onTap: () {
+        if (widget.homeProvider.songName != 'Title')
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NowPlaying(
+                      homeProvider: widget.homeProvider,
+                      audioPlayerRef: widget.audioPlayerRef)));
       },
-          child: Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

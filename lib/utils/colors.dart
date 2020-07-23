@@ -19,7 +19,7 @@ class DarkColors {
   static Color get red1 => Color(0xffd11302);
   static Color get red2 => Color(0xffa30d02);
   static Color get redDark => Color(0xff5d0f04);
-  static Color get playPauseButton => Color(0xffca5421);
+  static Color get playPauseButton => Colors.deepOrange;
   static Color get lightPink => Color(0xfff5a691);
 }
 
