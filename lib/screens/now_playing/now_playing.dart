@@ -34,7 +34,14 @@ class _NowPlayingState extends State<NowPlaying> {
             if (widget.homeProvider.isPlaying == true)
               _nowPlayingProvider.setPlayPauseIconData = Icons.pause;
             widget.audioPlayerRef.onAudioPositionChanged.listen((event) async {
-              _nowPlayingProvider.setSliderValue = event.inSeconds.toDouble();
+              _nowPlayingProvider.setSliderValue = event.inSeconds.toDouble() >=
+                      widget.audioPlayerRef.duration.inSeconds.toDouble()
+                  ? widget.audioPlayerRef.duration.inSeconds.toDouble()
+                  : event.inSeconds.toDouble();
+              _nowPlayingProvider.setSliderValue =
+                  event.inSeconds.toDouble() <= 0
+                      ? 0
+                      : event.inSeconds.toDouble();
 
               //handle timer
               _nowPlayingProvider.setPresentTime = _timerParser(
@@ -80,18 +87,25 @@ class _NowPlayingState extends State<NowPlaying> {
                               fontSize: 24),
                         ),
                         _topOptions(
-                            onTap: () {
-                              showDialog(
+                            onTap: () async {
+                              await showDialog(
                                   context: context,
                                   builder: (context) {
                                     return Material(
-                                     
-                                          child: CurrentSongList(
-                                            audioPlayer: widget.audioPlayerRef,
-                                            homeProvider: widget.homeProvider,
-                                          )
-                                    );
+                                        child: CurrentSongList(
+                                      audioPlayer: widget.audioPlayerRef,
+                                      homeProvider: widget.homeProvider,
+                                    ));
                                   });
+                              widget.audioPlayerRef.onPlayerStateChanged
+                                  .listen((event) {
+                                if (event == AudioPlayerState.PLAYING) {
+                                  _nowPlayingProvider.setPlayPauseIconData =
+                                      Icons.pause;
+                                  _nowPlayingProvider.setSliderValue = 0;
+                                  _nowPlayingProvider.notify();
+                                }
+                              });
                             },
                             iconData: Icons.list)
                       ],
