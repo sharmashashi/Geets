@@ -78,6 +78,7 @@ class HomeProvider with ChangeNotifier {
   set setMusicFileName(List<String> list) {
     this._musicFileName = list;
   }
+ 
 
   notify() {
     notifyListeners();
