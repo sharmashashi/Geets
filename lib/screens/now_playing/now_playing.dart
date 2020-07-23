@@ -93,15 +93,38 @@ class _NowPlayingState extends State<NowPlaying> {
                         ScreenDimension.percent(percent: 18, isHeight: true),
                     child: _songInfo()),
 
+                ///reserves height :15
+                ///for lyrics
+                Positioned(
+                  top: ScreenDimension.percent(percent: 70, isHeight: false) +
+                      ScreenDimension.percent(percent: 23, isHeight: true),
+                  child: Container(
+                    color: Colors.transparent,
+                    height:
+                        ScreenDimension.percent(percent: 15, isHeight: true),
+                    width: ScreenDimension.width,
+                  ),
+                ),
+
                 ///reserves height: 20 percent
                 Positioned(
                   top: ScreenDimension.percent(percent: 70, isHeight: false) +
                       ScreenDimension.percent(
-                        percent: 25,
+                        percent: 40,
                         isHeight: true,
                       ),
                   left: ScreenDimension.percent(percent: 5, isHeight: false),
                   child: _slider(provider: _nowPlayingProvider),
+                ),
+
+                ///reserves height : rest of all
+                Positioned(
+                  top: ScreenDimension.percent(percent: 70, isHeight: false) +
+                      ScreenDimension.percent(
+                        percent: 50,
+                        isHeight: true,
+                      ),
+                  child: _controllers(provider: _nowPlayingProvider),
                 )
               ]),
             ),
@@ -111,12 +134,25 @@ class _NowPlayingState extends State<NowPlaying> {
     );
   }
 
+  Widget _controllers({@required NowPlayingProvider provider}) {
+    return Container(
+      width: ScreenDimension.width,
+      height: ScreenDimension.height -
+          (ScreenDimension.percent(percent: 70, isHeight: false) +
+              ScreenDimension.percent(
+                percent: 50,
+                isHeight: true,
+              )),
+      color: Colors.transparent,
+    );
+  }
+
   Widget _slider({@required NowPlayingProvider provider}) {
     return Container(
       alignment: Alignment.center,
-      color: CustomColors.background,
+      color: Colors.transparent,
       width: ScreenDimension.percent(percent: 90, isHeight: false),
-      height: ScreenDimension.percent(percent: 20, isHeight: true),
+      height: ScreenDimension.percent(percent: 10, isHeight: true),
       child: Column(
         children: <Widget>[
           Slider(
@@ -134,7 +170,7 @@ class _NowPlayingState extends State<NowPlaying> {
               widget.audioPlayerRef.seek(val.toInt().toDouble());
               _lockUpdateSlider = false;
             },
-            activeColor: CustomColors.playPauseButton,
+            activeColor: Colors.deepOrange,
             inactiveColor: Colors.orange[100],
           ),
           //for time duration
