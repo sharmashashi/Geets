@@ -30,6 +30,8 @@ class _NowPlayingState extends State<NowPlaying> {
 
           if (_listening == false) {
             _listening = true;
+            if (widget.homeProvider.isPlaying == true)
+              _nowPlayingProvider.setPlayPauseIconData = Icons.pause;
             widget.audioPlayerRef.onAudioPositionChanged.listen((event) async {
               _nowPlayingProvider.setSliderValue = event.inSeconds.toDouble();
 
@@ -143,7 +145,128 @@ class _NowPlayingState extends State<NowPlaying> {
                 percent: 50,
                 isHeight: true,
               )),
+      alignment: Alignment.center,
       color: Colors.transparent,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          _ctrlBtn(
+              onTap: () async {
+                ///prev logic
+                ///
+                //if not first song
+                if (widget.homeProvider.currentSongIndex != 0)
+                //execute only if playing
+                if (widget.homeProvider.isPlaying == true &&
+                    widget.homeProvider.isCompleted == false &&
+                    widget.homeProvider.isStopped == false) {
+                  await widget.audioPlayerRef.stop();
+
+                  widget.audioPlayerRef.play(
+                      widget.homeProvider.musicFilePath[
+                          widget.homeProvider.currentSongIndex - 1],
+                      isLocal: true);
+                  widget.homeProvider.setCurrentSongIndex =
+                      widget.homeProvider.currentSongIndex - 1;
+                  widget.homeProvider.setSongName = widget.homeProvider
+                      .musicFileName[widget.homeProvider.currentSongIndex];
+                  widget.homeProvider.notify();
+                }
+
+                ///
+                ///
+              },
+              centerButton: false,
+              iconData: Icons.skip_previous),
+          Container(
+            width: 15,
+          ),
+          _ctrlBtn(
+              onTap: () {
+                provider.setPlayPauseIconData =
+                    provider.playPauseIconData == Icons.play_arrow
+                        ? Icons.pause
+                        : Icons.play_arrow;
+
+                ///playpause logic
+                ///
+                if (widget.homeProvider.isPlaying == true) {
+                  widget.audioPlayerRef.pause();
+                } else if (widget.homeProvider.isPlaying == false) {
+                  widget.audioPlayerRef.play(
+                      widget.homeProvider
+                          .musicFilePath[widget.homeProvider.currentSongIndex],
+                      isLocal: true);
+                }
+
+                ///
+                ///
+                provider.notify();
+              },
+              centerButton: true,
+              iconData: provider.playPauseIconData),
+          Container(
+            width: 15,
+          ),
+          _ctrlBtn(
+              onTap: () async {
+                ///
+                ///next logic
+
+                //if not last song
+                if (widget.homeProvider.currentSongIndex !=
+                    widget.homeProvider.musicFilePath.length - 1)
+                //execute only if playing
+                if (widget.homeProvider.isPlaying == true &&
+                    widget.homeProvider.isCompleted == false &&
+                    widget.homeProvider.isStopped == false) {
+                  await widget.audioPlayerRef.stop();
+
+                  widget.audioPlayerRef.play(
+                      widget.homeProvider.musicFilePath[
+                          widget.homeProvider.currentSongIndex + 1],
+                      isLocal: true);
+                  widget.homeProvider.setCurrentSongIndex =
+                      widget.homeProvider.currentSongIndex + 1;
+                  widget.homeProvider.setSongName = widget.homeProvider
+                      .musicFileName[widget.homeProvider.currentSongIndex];
+
+                  widget.homeProvider.notify();
+                }
+
+                ///
+                ///
+              },
+              centerButton: false,
+              iconData: Icons.skip_next)
+        ],
+      ),
+    );
+  }
+
+  Widget _ctrlBtn(
+      {@required Function onTap,
+      @required bool centerButton,
+      @required IconData iconData}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: ScreenDimension.percent(
+            percent: centerButton ? 7 : 5, isHeight: true),
+        width: ScreenDimension.percent(
+            percent: centerButton ? 7 : 5, isHeight: true),
+        decoration: BoxDecoration(
+            color: CustomColors.background,
+            shape: BoxShape.circle,
+            boxShadow: CustomShadow.normalButtonShadow),
+        alignment: Alignment.center,
+        child: Icon(
+          iconData,
+          size: centerButton ? 40 : 25,
+          color: centerButton ? Colors.white : DarkColors.playPauseButton,
+        ),
+      ),
     );
   }
 

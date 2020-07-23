@@ -18,7 +18,12 @@ class NowPlayingProvider with ChangeNotifier {
   set setRemainingTime(String t) {
     this._remainingTime = t;
   }
-  
+
+  IconData _playPauseIconData = Icons.play_arrow;
+  IconData get playPauseIconData => _playPauseIconData;
+  set setPlayPauseIconData(IconData d) {
+    this._playPauseIconData = d;
+  }
 
   notify() {
     notifyListeners();
