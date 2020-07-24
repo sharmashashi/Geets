@@ -64,8 +64,12 @@ class _PlayerBottomBarState extends State<PlayerBottomBar> {
             height: ScreenDimension.percent(percent: 5, isHeight: true) - 5,
             width: ScreenDimension.percent(percent: 55, isHeight: false) - 20,
             child: Text(
-              widget.homeProvider
-                  .musicFileName[widget.homeProvider.currentSongIndex],
+              widget.homeProvider.musicFileName[
+                          widget.homeProvider.currentSongIndex] ==
+                      null
+                  ? 'Unknown'
+                  : widget.homeProvider
+                      .musicFileName[widget.homeProvider.currentSongIndex],
               overflow: TextOverflow.clip,
               style: TextStyle(
                   color: CustomColors.highlightedText,
@@ -78,10 +82,14 @@ class _PlayerBottomBarState extends State<PlayerBottomBar> {
             height: ScreenDimension.percent(percent: 3, isHeight: true) - 5,
             width: ScreenDimension.percent(percent: 55, isHeight: false) - 20,
             child: Text(
-              widget.homeProvider.artistList.length == 0
-                  ? 'Loading...'
+               widget.homeProvider
+                          .artistList.length!=0?
+              widget.homeProvider
+                          .artistList[widget.homeProvider.currentSongIndex] ==
+                      null
+                  ? 'Unknown'
                   : widget.homeProvider
-                      .artistList[widget.homeProvider.currentSongIndex],
+                      .artistList[widget.homeProvider.currentSongIndex]:'Unknown',
               style: TextStyle(color: CustomColors.normalText, fontSize: 10),
             ),
           )
