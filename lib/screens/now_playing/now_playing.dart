@@ -198,8 +198,7 @@ class _NowPlayingState extends State<NowPlaying> {
                       isLocal: true);
                   widget.homeProvider.setCurrentSongIndex =
                       widget.homeProvider.currentSongIndex - 1;
-                  widget.homeProvider.setSongName = widget.homeProvider
-                      .musicFileName[widget.homeProvider.currentSongIndex];
+
                   widget.homeProvider.notify();
                 }
 
@@ -258,8 +257,6 @@ class _NowPlayingState extends State<NowPlaying> {
                       isLocal: true);
                   widget.homeProvider.setCurrentSongIndex =
                       widget.homeProvider.currentSongIndex + 1;
-                  widget.homeProvider.setSongName = widget.homeProvider
-                      .musicFileName[widget.homeProvider.currentSongIndex];
 
                   widget.homeProvider.notify();
                 }
@@ -379,7 +376,8 @@ class _NowPlayingState extends State<NowPlaying> {
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Text(
-              widget.homeProvider.songName,
+              widget.homeProvider
+                  .musicFileName[widget.homeProvider.currentSongIndex],
               overflow: TextOverflow.clip,
               style: TextStyle(
                   color: CustomColors.highlightedText,
@@ -393,7 +391,8 @@ class _NowPlayingState extends State<NowPlaying> {
           height: ScreenDimension.percent(percent: 2.5, isHeight: true),
           width: ScreenDimension.percent(percent: 100, isHeight: false),
           child: Text(
-            widget.homeProvider.artist,
+            widget
+                .homeProvider.artistList[widget.homeProvider.currentSongIndex],
             style: TextStyle(color: CustomColors.normalText, fontSize: 14),
           ),
         )
@@ -412,13 +411,8 @@ class _NowPlayingState extends State<NowPlaying> {
       padding: EdgeInsets.all(10),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(1000),
-        child: Image.asset(
-          CustomColors.background == DarkColors.background
-              ? 'assets/couple_dark.jpg'
-              : 'assets/couple_light.jpg',
-          alignment: Alignment.center,
-          fit: BoxFit.cover,
-        ),
+        child:
+            widget.homeProvider.artWork[widget.homeProvider.currentSongIndex],
       ),
     );
   }

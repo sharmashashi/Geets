@@ -2,20 +2,6 @@ import 'package:Geets/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class HomeProvider with ChangeNotifier {
-  String _songName = 'Title';
-  String get songName => _songName;
-
-  set setSongName(String str) {
-    this._songName = str;
-  }
-
-  String _artist = 'Artist';
-  String get artist => _artist;
-
-  set setArtist(String str) {
-    this._artist = str;
-    notifyListeners();
-  }
 
   Icon _playPauseIcon = Icon(
     Icons.play_arrow,
@@ -33,7 +19,7 @@ class HomeProvider with ChangeNotifier {
     this._artistList = list;
   }
 
-  List<Widget> _artWork=List();
+  List<Widget> _artWork = List();
   List<Widget> get artWork => _artWork;
   set setArtWork(List<Widget> wrk) {
     this._artWork = wrk;

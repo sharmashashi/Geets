@@ -46,13 +46,12 @@ class _PlayerBottomBarState extends State<PlayerBottomBar> {
   Widget _songInfo() {
     return GestureDetector(
       onTap: () {
-        if (widget.homeProvider.songName != 'Title')
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NowPlaying(
-                      homeProvider: widget.homeProvider,
-                      audioPlayerRef: widget.audioPlayerRef)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NowPlaying(
+                    homeProvider: widget.homeProvider,
+                    audioPlayerRef: widget.audioPlayerRef)));
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +64,8 @@ class _PlayerBottomBarState extends State<PlayerBottomBar> {
             height: ScreenDimension.percent(percent: 5, isHeight: true) - 5,
             width: ScreenDimension.percent(percent: 55, isHeight: false) - 20,
             child: Text(
-              widget.homeProvider.songName,
+              widget.homeProvider
+                  .musicFileName[widget.homeProvider.currentSongIndex],
               overflow: TextOverflow.clip,
               style: TextStyle(
                   color: CustomColors.highlightedText,
@@ -78,7 +78,10 @@ class _PlayerBottomBarState extends State<PlayerBottomBar> {
             height: ScreenDimension.percent(percent: 3, isHeight: true) - 5,
             width: ScreenDimension.percent(percent: 55, isHeight: false) - 20,
             child: Text(
-              widget.homeProvider.artist,
+              widget.homeProvider.artistList.length == 0
+                  ? 'Loading...'
+                  : widget.homeProvider
+                      .artistList[widget.homeProvider.currentSongIndex],
               style: TextStyle(color: CustomColors.normalText, fontSize: 10),
             ),
           )
@@ -112,8 +115,7 @@ class _PlayerBottomBarState extends State<PlayerBottomBar> {
                     isLocal: true);
                 widget.homeProvider.setCurrentSongIndex =
                     widget.homeProvider.currentSongIndex - 1;
-                widget.homeProvider.setSongName = widget.homeProvider
-                    .musicFileName[widget.homeProvider.currentSongIndex];
+
                 widget.homeProvider.notify();
               }
             },
@@ -152,8 +154,6 @@ class _PlayerBottomBarState extends State<PlayerBottomBar> {
                     isLocal: true);
                 widget.homeProvider.setCurrentSongIndex =
                     widget.homeProvider.currentSongIndex + 1;
-                widget.homeProvider.setSongName = widget.homeProvider
-                    .musicFileName[widget.homeProvider.currentSongIndex];
 
                 widget.homeProvider.notify();
               }

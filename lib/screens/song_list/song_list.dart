@@ -62,9 +62,7 @@ class _SongListState extends State<SongList> {
                         widget.homeProvider.musicFilePath[
                             widget.homeProvider.currentSongIndex + 1],
                         isLocal: true);
-                    widget.homeProvider.setSongName =
-                        widget.homeProvider.musicFileName[
-                            widget.homeProvider.currentSongIndex + 1];
+
                     widget.homeProvider.setCurrentSongIndex =
                         widget.homeProvider.currentSongIndex + 1;
                     widget.homeProvider.notify();
@@ -180,7 +178,11 @@ class _SongListState extends State<SongList> {
   }
 
   Future<Widget> _getArtWork(String filePath) async {
-    Widget _retn = Image.asset('assets/couple_light.jpg', fit: BoxFit.cover);
+    Widget _retn = Image.asset(
+        CustomColors.background == DarkColors.background
+            ? 'assets/couple_dark.jpg'
+            : 'assets/couple_light.jpg',
+        fit: BoxFit.cover);
     Uint8List _artWork = await _audioTagger.readArtwork(path: filePath);
     if (_artWork != null && _artWork.length != 0) {
       try {

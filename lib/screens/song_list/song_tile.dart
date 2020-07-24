@@ -22,7 +22,7 @@ class SongTile extends StatefulWidget {
       @required this.filePath,
       @required this.homeProvider,
       this.backAfterClick,
-      @required this.artWork,
+      this.artWork,
       @required this.audioPlayerRef});
   @override
   _SongTileState createState() => _SongTileState();
@@ -135,14 +135,13 @@ class _SongTileState extends State<SongTile> {
         decoration: BoxDecoration(),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child:widget.artWork,
+          child: widget.artWork,
         ));
   }
 
   Future<void> _handlePlay() async {
     if (widget.count - 1 != widget.homeProvider.currentSongIndex) {
-      widget.homeProvider.setSongName = 'Loading ...';
-      widget.homeProvider.setArtist = 'Unknown';
+     
       //if playing or paused another song stop it first
       if (widget.homeProvider.isCompleted == false &&
           widget.homeProvider.isStopped == false) {
@@ -156,7 +155,7 @@ class _SongTileState extends State<SongTile> {
       widget.homeProvider.setCurrentSongIndex = widget.count - 1;
       await widget.audioPlayerRef.play(widget.filePath, isLocal: true);
       widget.homeProvider.updateSongStatus(playpause: true);
-      widget.homeProvider.setSongName = widget.title;
+      
       widget.homeProvider.notify();
     }
   }

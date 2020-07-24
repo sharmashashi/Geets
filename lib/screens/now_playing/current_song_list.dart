@@ -31,10 +31,11 @@ class _CurrentSongListState extends State<CurrentSongList> {
     List<Widget> tempList = List();
     for (int i = 0; i < widget.homeProvider.musicFileName.length; i++) {
       tempList.add(SongTile(
+        
         backAfterClick: true,
         homeProvider: widget.homeProvider,
         audioPlayerRef: widget.audioPlayer,
-        artist: "unknown",
+        artist: widget.homeProvider.artistList[i],
         count: i + 1,
         filePath: widget.homeProvider.musicFilePath[i],
         title: widget.homeProvider.musicFileName[i],
