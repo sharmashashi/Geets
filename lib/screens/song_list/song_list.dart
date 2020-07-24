@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:Geets/screens/home/home_provider.dart';
 import 'package:Geets/screens/song_list/song_list_provider.dart';
@@ -125,13 +126,13 @@ class _SongListState extends State<SongList> {
       List<Widget> tempList = List();
       for (int i = 0; i < musicFileNameList.length; i++) {
         tempList.add(SongTile(
-          homeProvider: widget.homeProvider,
-          audioPlayerRef: widget.audioPlayer,
-          artist: widget.homeProvider.artistList[i],
-          count: i + 1,
-          filePath: musicPathList[i],
-          title: widget.homeProvider.musicFileName[i],
-        ));
+            homeProvider: widget.homeProvider,
+            audioPlayerRef: widget.audioPlayer,
+            artist: widget.homeProvider.artistList[i],
+            count: i + 1,
+            filePath: musicPathList[i],
+            title: widget.homeProvider.musicFileName[i],
+            artWork: widget.homeProvider.artWork[i]));
       }
       if (tempList.length == 0) {
         provider.setSongList = [Text('There are no songs in your device')];
@@ -148,7 +149,15 @@ class _SongListState extends State<SongList> {
   Future<bool> _refine() async {
     List<String> _tempList = List(musicFileNameList.length);
     List<String> _tempListArtist = List(musicFileNameList.length);
+    List<Widget> _tempListArtWork = List(musicFileNameList.length);
     for (int i = 0; i < musicFileNameList.length; i++) {
+      ///
+      ///
+      Widget _getArt = await _getArtWork(widget.homeProvider.musicFilePath[i]);
+      _tempListArtWork[i] = _getArt;
+
+      ///
+      ///
       Tag _tag = await _audioTagger.readTags(
           path: widget.homeProvider.musicFilePath[i]);
 
@@ -165,7 +174,22 @@ class _SongListState extends State<SongList> {
     }
     widget.homeProvider.setMusicFileName = _tempList;
     widget.homeProvider.setArtistList = _tempListArtist;
+    widget.homeProvider.setArtWork = _tempListArtWork;
     widget.homeProvider.notify();
     return true;
+  }
+
+  Future<Widget> _getArtWork(String filePath) async {
+    Widget _retn = Image.asset('assets/couple_light.jpg', fit: BoxFit.cover);
+    Uint8List _artWork = await _audioTagger.readArtwork(path: filePath);
+    if (_artWork != null && _artWork.length != 0) {
+      try {
+        _retn = Image.memory(_artWork, fit: BoxFit.cover);
+      } on Error catch (error) {
+        print(error);
+      }
+    }
+
+    return _retn;
   }
 }

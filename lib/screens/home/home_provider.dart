@@ -33,6 +33,12 @@ class HomeProvider with ChangeNotifier {
     this._artistList = list;
   }
 
+  List<Widget> _artWork=List();
+  List<Widget> get artWork => _artWork;
+  set setArtWork(List<Widget> wrk) {
+    this._artWork = wrk;
+  }
+
   bool _isPlaying = false;
   bool get isPlaying => _isPlaying;
   bool _isCompleted = false;
