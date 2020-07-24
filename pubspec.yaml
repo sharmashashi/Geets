@@ -14,6 +14,7 @@ dependencies:
   audioplayer: ^0.8.1
   file_picker: ^1.12.0
   path_provider: ^1.6.11
+  audiotagger: ^1.1.0
 
 dev_dependencies:
   flutter_test:

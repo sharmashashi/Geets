@@ -130,43 +130,43 @@ class _SongTileState extends State<SongTile> {
     );
   }
 
-  Widget _playerButton(TileProvider provider) {
-    AudioPlayer _audioPlayer = AudioPlayer();
-    return GestureDetector(
-      onTap: () async {
-        if (provider.isPlaying == false) {
-          _audioPlayer.play(widget.filePath, isLocal: true);
-        } else {
-          _audioPlayer.stop();
-        }
-      },
-      child: Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: CustomColors.background, width: 2),
-              gradient: LinearGradient(colors: [
-                CustomColors.upperLeftShadow,
-                CustomColors.background
-              ], stops: [
-                0.3,
-                1
-              ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-              boxShadow: [
-                BoxShadow(
-                    blurRadius: 2,
-                    spreadRadius: 2,
-                    offset: Offset(1, 1),
-                    color: CustomColors.lowerRightShadow),
-                BoxShadow(
-                    blurRadius: 2,
-                    spreadRadius: 2,
-                    offset: Offset(-1, -1),
-                    color: CustomColors.upperLeftShadow),
-              ]),
-          child: provider.playPauseIcon),
-    );
-  }
+  // Widget _playerButton(TileProvider provider) {
+  //   AudioPlayer _audioPlayer = AudioPlayer();
+  //   return GestureDetector(
+  //     onTap: () async {
+  //       if (provider.isPlaying == false) {
+  //         _audioPlayer.play(widget.filePath, isLocal: true);
+  //       } else {
+  //         _audioPlayer.stop();
+  //       }
+  //     },
+  //     child: Container(
+  //         padding: EdgeInsets.all(8),
+  //         decoration: BoxDecoration(
+  //             shape: BoxShape.circle,
+  //             border: Border.all(color: CustomColors.background, width: 2),
+  //             gradient: LinearGradient(colors: [
+  //               CustomColors.upperLeftShadow,
+  //               CustomColors.background
+  //             ], stops: [
+  //               0.3,
+  //               1
+  //             ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+  //             boxShadow: [
+  //               BoxShadow(
+  //                   blurRadius: 2,
+  //                   spreadRadius: 2,
+  //                   offset: Offset(1, 1),
+  //                   color: CustomColors.lowerRightShadow),
+  //               BoxShadow(
+  //                   blurRadius: 2,
+  //                   spreadRadius: 2,
+  //                   offset: Offset(-1, -1),
+  //                   color: CustomColors.upperLeftShadow),
+  //             ]),
+  //         child: provider.playPauseIcon),
+  //   );
+  // }
 
   Future<void> _handlePlay() async {
     if (widget.count - 1 != widget.homeProvider.currentSongIndex) {

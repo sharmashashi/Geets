@@ -99,10 +99,16 @@ class _SongListState extends State<SongList> {
       if (event.path.contains('.mp3') ||
           event.path.contains('.m4a') ||
           event.path.contains('.Mp3')) {
-        musicPathList.add(event.path);
-        _fileName =
-            event.path.replaceRange(0, event.parent.path.length + 1, '');
-        musicFileNameList.add(_fileName);
+        if (event.path.contains('Android') == false) {
+          File(event.path).length().then((value) {
+            if (value >=1048576) {
+              musicPathList.add(event.path);
+              _fileName =
+                  event.path.replaceRange(0, event.parent.path.length + 1, '');
+              musicFileNameList.add(_fileName);
+            }
+          });
+        }
       }
     });
     subscription.onDone(() {
