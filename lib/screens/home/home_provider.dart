@@ -27,6 +27,12 @@ class HomeProvider with ChangeNotifier {
     _playPauseIcon = icon;
   }
 
+  List<String> _artistList = List();
+  List<String> get artistList => _artistList;
+  set setArtistList(List<String> list) {
+    this._artistList = list;
+  }
+
   bool _isPlaying = false;
   bool get isPlaying => _isPlaying;
   bool _isCompleted = false;
@@ -78,7 +84,6 @@ class HomeProvider with ChangeNotifier {
   set setMusicFileName(List<String> list) {
     this._musicFileName = list;
   }
- 
 
   notify() {
     notifyListeners();

@@ -7,6 +7,8 @@ import 'package:Geets/screens/song_list/song_tile.dart';
 import 'package:Geets/utils/colors.dart';
 import 'package:Geets/utils/screen_dimension.dart';
 import 'package:audioplayer/audioplayer.dart';
+import 'package:audiotagger/audiotagger.dart';
+import 'package:audiotagger/models/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +21,7 @@ class SongList extends StatefulWidget {
 }
 
 class _SongListState extends State<SongList> {
+  Audiotagger _audioTagger = Audiotagger();
   List<String> musicPathList = List();
   List<String> musicFileNameList = List();
   bool fetchSong = false;
@@ -100,33 +103,34 @@ class _SongListState extends State<SongList> {
           event.path.contains('.m4a') ||
           event.path.contains('.Mp3')) {
         if (event.path.contains('Android') == false) {
-          File(event.path).length().then((value) {
-            if (value >=1048576) {
-              musicPathList.add(event.path);
-              _fileName =
-                  event.path.replaceRange(0, event.parent.path.length + 1, '');
-              musicFileNameList.add(_fileName);
-            }
-          });
+          int _len = await File(event.path).length();
+          if (_len >= 1048576) {
+            //audiotagger
+            musicPathList.add(event.path);
+            _fileName =
+                event.path.replaceRange(0, event.parent.path.length + 1, '');
+
+            musicFileNameList.add(_fileName);
+          }
         }
       }
     });
-    subscription.onDone(() {
+    subscription.onDone(() async {
       widget.homeProvider.setMusicFileName = musicFileNameList;
       widget.homeProvider.setMusicFilePath = musicPathList;
-      widget.homeProvider.setHasFetchedAllSongs = true;
-      widget.homeProvider.notify();
 
+      //refine title artists...
+      await _refine();
       //display all song list
       List<Widget> tempList = List();
       for (int i = 0; i < musicFileNameList.length; i++) {
         tempList.add(SongTile(
           homeProvider: widget.homeProvider,
           audioPlayerRef: widget.audioPlayer,
-          artist: "unknown",
+          artist: widget.homeProvider.artistList[i],
           count: i + 1,
           filePath: musicPathList[i],
-          title: musicFileNameList[i],
+          title: widget.homeProvider.musicFileName[i],
         ));
       }
       if (tempList.length == 0) {
@@ -139,5 +143,29 @@ class _SongListState extends State<SongList> {
         provider.setSongList = tempList;
       }
     });
+  }
+
+  Future<bool> _refine() async {
+    List<String> _tempList = List(musicFileNameList.length);
+    List<String> _tempListArtist = List(musicFileNameList.length);
+    for (int i = 0; i < musicFileNameList.length; i++) {
+      Tag _tag = await _audioTagger.readTags(
+          path: widget.homeProvider.musicFilePath[i]);
+
+      if (_tag.title != null || _tag.title != '' || _tag.title != ' ') {
+        _tempList[i] = _tag.title;
+      } else {
+        _tempList[i] = musicFileNameList[i];
+      }
+      if (_tag.artist != null || _tag.artist != '' || _tag.artist != ' ') {
+        _tempListArtist[i] = _tag.artist;
+      } else {
+        _tempListArtist[i] = 'Can you identify?';
+      }
+    }
+    widget.homeProvider.setMusicFileName = _tempList;
+    widget.homeProvider.setArtistList = _tempListArtist;
+    widget.homeProvider.notify();
+    return true;
   }
 }
