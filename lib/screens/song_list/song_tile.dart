@@ -108,7 +108,7 @@ class _SongTileState extends State<SongTile> {
           height: ScreenDimension.percent(percent: 5, isHeight: true) - 5,
           width: ScreenDimension.percent(percent: 60, isHeight: false) - 20,
           child: Text(
-            widget.title,
+            widget.title != null ? widget.title : 'Guess the title',
             overflow: TextOverflow.clip,
             style: TextStyle(
                 color: CustomColors.highlightedText,
@@ -120,7 +120,7 @@ class _SongTileState extends State<SongTile> {
           height: ScreenDimension.percent(percent: 3, isHeight: true) - 5,
           width: ScreenDimension.percent(percent: 60, isHeight: false) - 20,
           child: Text(
-            widget.artist,
+             widget.artist != null ? widget.artist : 'Unknown',
             style: TextStyle(color: CustomColors.normalText, fontSize: 10),
           ),
         )
@@ -141,7 +141,6 @@ class _SongTileState extends State<SongTile> {
 
   Future<void> _handlePlay() async {
     if (widget.count - 1 != widget.homeProvider.currentSongIndex) {
-     
       //if playing or paused another song stop it first
       if (widget.homeProvider.isCompleted == false &&
           widget.homeProvider.isStopped == false) {
@@ -155,7 +154,7 @@ class _SongTileState extends State<SongTile> {
       widget.homeProvider.setCurrentSongIndex = widget.count - 1;
       await widget.audioPlayerRef.play(widget.filePath, isLocal: true);
       widget.homeProvider.updateSongStatus(playpause: true);
-      
+
       widget.homeProvider.notify();
     }
   }

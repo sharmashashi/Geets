@@ -42,6 +42,7 @@ class _SongListState extends State<SongList> {
                 Provider.of<SongListProvider>(context);
             if (fetchSong == false) {
               fetchSong = true;
+
               _getSongList(_songListProvider);
 
               //listen for audio status
@@ -115,32 +116,62 @@ class _SongListState extends State<SongList> {
       }
     });
     subscription.onDone(() async {
-      widget.homeProvider.setMusicFileName = musicFileNameList;
-      widget.homeProvider.setMusicFilePath = musicPathList;
+      ///get songs from sdcard
+      ///
+      Directory _dir1 = Directory(Directory.current.path + 'storage');
 
-      //refine title artists...
-      await _refine();
-      //display all song list
-      List<Widget> tempList = List();
-      for (int i = 0; i < musicFileNameList.length; i++) {
-        tempList.add(SongTile(
-            homeProvider: widget.homeProvider,
-            audioPlayerRef: widget.audioPlayer,
-            artist: widget.homeProvider.artistList[i],
-            count: i + 1,
-            filePath: musicPathList[i],
-            title: widget.homeProvider.musicFileName[i],
-            artWork: widget.homeProvider.artWork[i]));
-      }
-      if (tempList.length == 0) {
-        provider.setSongList = [Text('There are no songs in your device')];
-      } else {
-        tempList.add(Container(
-          width: 5,
-          height: ScreenDimension.percent(percent: 10, isHeight: true),
-        ));
-        provider.setSongList = tempList;
-      }
+      Stream<FileSystemEntity> entityStream1 = _dir1.list(recursive: true);
+      // ignore: cancel_subscriptions
+      StreamSubscription<FileSystemEntity> subscription1 =
+          entityStream1.listen((_) {});
+
+      subscription1.onData((event) async {
+        if (event.path.contains('.mp3') ||
+            event.path.contains('.m4a') ||
+            event.path.contains('.Mp3')) {
+          if (event.path.contains('Android') == false) {
+            int _len = await File(event.path).length();
+            if (_len >= 1048576) {
+              //audiotagger
+              musicPathList.add(event.path);
+              _fileName =
+                  event.path.replaceRange(0, event.parent.path.length + 1, '');
+
+              musicFileNameList.add(_fileName);
+            }
+          }
+        }
+      });
+      subscription1.onDone(() async {
+        widget.homeProvider.setMusicFileName = musicFileNameList;
+        widget.homeProvider.setMusicFilePath = musicPathList;
+
+        //refine title artists...
+        await _refine();
+        //display all song list
+        List<Widget> tempList = List();
+        for (int i = 0; i < musicFileNameList.length; i++) {
+          tempList.add(SongTile(
+              homeProvider: widget.homeProvider,
+              audioPlayerRef: widget.audioPlayer,
+              artist: widget.homeProvider.artistList[i],
+              count: i + 1,
+              filePath: musicPathList[i],
+              title: widget.homeProvider.musicFileName[i],
+              artWork: widget.homeProvider.artWork[i]));
+        }
+        if (tempList.length == 0) {
+          provider.setSongList = [Text('There are no songs in your device')];
+        } else {
+          tempList.add(Container(
+            width: 5,
+            height: ScreenDimension.percent(percent: 10, isHeight: true),
+          ));
+          provider.setSongList = tempList;
+        }
+      });
+
+      ///
     });
   }
 
@@ -149,25 +180,28 @@ class _SongListState extends State<SongList> {
     List<String> _tempListArtist = List(musicFileNameList.length);
     List<Widget> _tempListArtWork = List(musicFileNameList.length);
     for (int i = 0; i < musicFileNameList.length; i++) {
-      ///
-      ///
-      Widget _getArt = await _getArtWork(widget.homeProvider.musicFilePath[i]);
-      _tempListArtWork[i] = _getArt;
+      try {
+        ///
+        ///
+        Widget _getArt =
+            await _getArtWork(widget.homeProvider.musicFilePath[i]);
+        _tempListArtWork[i] = _getArt;
 
-      ///
-      ///
-      Tag _tag = await _audioTagger.readTags(
-          path: widget.homeProvider.musicFilePath[i]);
+        ///
+        ///
+        Tag _tag = await _audioTagger.readTags(
+            path: widget.homeProvider.musicFilePath[i]);
 
-      if (_tag.title != null || _tag.title != '' || _tag.title != ' ') {
-        _tempList[i] = _tag.title;
-      } else {
-        _tempList[i] = musicFileNameList[i];
-      }
-      if (_tag.artist != null || _tag.artist != '' || _tag.artist != ' ') {
-        _tempListArtist[i] = _tag.artist;
-      } else {
+        if (_tag.title != null && _tag.title != '' && _tag.title != ' ') {
+          _tempList[i] = _tag.title;
+        } else {}
+        if (_tag.artist != null && _tag.artist != '' && _tag.artist != ' ') {
+          _tempListArtist[i] = _tag.artist;
+        } else {}
+      } catch (e) {
+        _tempList[i] = 'Unknown';
         _tempListArtist[i] = 'Can you identify?';
+        continue;
       }
     }
     widget.homeProvider.setMusicFileName = _tempList;
